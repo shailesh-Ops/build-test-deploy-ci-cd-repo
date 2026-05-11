@@ -14,5 +14,5 @@ def submit():
     name = request.form['name']
     return f'hello from DevOps Engineer,{name}!'
 
-if __name__ == '__app__':
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0',port=5000,Debug=True)
