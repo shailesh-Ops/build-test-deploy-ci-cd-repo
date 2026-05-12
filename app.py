@@ -8,7 +8,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/submit',method='POST')
+@app.route('/submit',method='[POST]')
 def submit():
    
     name = request.form['name']
