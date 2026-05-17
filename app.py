@@ -1,18 +1,13 @@
-from  flask import  Flask , render_template , request
+from flask import Flask
 
 
+source="DevOps-Engineer"
 app = Flask(__name__)
 
-@app.route('/')
+@app.route("/")
 
-def index():
-    return render_template('index.html')
+def hello_server():
+    return {f"this message hello from :":"{source}" }
 
-@app.route('/submit',method='[POST]')
-def submit():
-   
-    name = request.form['name']
-    return f'hello from DevOps Engineer,{name}!'
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000,Debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0',port=9000,Debug=True)
