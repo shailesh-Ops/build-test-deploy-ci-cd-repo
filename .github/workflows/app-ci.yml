@@ -1,0 +1,21 @@
+name: this is ci for python app
+
+on: 
+  push:
+    branches:
+    - main
+
+jobs: 
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+     - name: checkout code
+       uses: actions/checkout@v3
+
+     - name: build docker images
+       run: docker build -t my-app-images .
+
+
+     - name: spins the container for images base
+       run: docker run -d -p 9000:9000 --name app-container my-app-images   
