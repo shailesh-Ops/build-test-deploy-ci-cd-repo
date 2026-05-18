@@ -1,0 +1,21 @@
+name: this is ci for python app
+
+on: 
+  push:
+    branches:
+    - main
+
+jobs: 
+  build-and-run:
+    runs-on: ubuntu-latest
+
+
+steps:
+  - name: chechout code 
+  - uses: actions/chechout@v3
+
+  - name: build docker images 
+    run: docker build -t images-for-app .
+
+  - name: run docker containers from images
+    run: docker run -d -p 9000:9000 --name black-contaoiners-v images-for-app 
