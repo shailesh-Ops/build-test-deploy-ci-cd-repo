@@ -1,0 +1,16 @@
+version: '3.11'
+
+services:
+  web-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: docker-app:v2.2
+    container_name: docker-container-v2.2
+    
+    volumes:
+      - /docker-mount/logs:/project-app/logs 
+
+    ports:
+      - "9000:9000"
+
