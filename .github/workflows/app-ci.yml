@@ -18,4 +18,4 @@ jobs:
 
 
      - name: spins the container for images base
-       run: docker run -d -p 9000:9000 -v /project/ --name app-container my-app-images   
+       run: docker run -d -p 9000:9000 -v /project/server-app:\project-app --name app-container my-app-images   
