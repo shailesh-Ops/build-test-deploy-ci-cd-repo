@@ -2,7 +2,7 @@ name: CD for python application
 
 on:
     workflow_run:
-        workflows: ["this is ci for python app "]
+        workflows: [ " this is ci for python app " ]
         types:
             - completed
         branches:
@@ -11,7 +11,7 @@ on:
 jobs:
     Deploy-and-monitoring:
         runs-on: self-hosted
-        environment: production
+        # environment: production
 
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
