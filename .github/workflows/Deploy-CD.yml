@@ -1,0 +1,78 @@
+name: CD for python application
+
+on:
+    workflow_run:
+        workflows: ["this is ci for python app "]
+        types:
+            - completed
+        branches:
+            - main
+
+jobs:
+    Deploy-and-monitoring:
+        runs-on: self-hosted
+        environment: production
+
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+        steps:
+
+            - name: checkout code
+              uses: actions/checkout@v4
+
+
+            - name: login to dockerhub.io
+              run: echo "${{ secrets.DOCKER_LOGIN_PASS}}" | docker login -u "${{ secrets.DOCKER_USER_NAME}}" --password-stdin
+
+            - name: pull latest image from dockerhub.io
+              run: |
+                    USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')   
+                    docker pull $USERNAME/my-app-images:latest
+  
+
+            - name: stop and remove old container 
+              run: |
+                    docker stop app-container || true
+                    docker rm -f app-container || true
+
+            - name: i will create custom volume 
+              run: |
+                    docker volume create \
+                    -d local \
+                    -o type=none \
+                    -o o=bind \
+                    -o device=/docker-mount/logs \
+                    my-custom-volume     # this is volume name
+
+            - name: checkout if volume is create or not
+              run: docker volume ls        
+                    
+            - name: run latest new an container 
+              run: |
+                    USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
+                    docker run -d -p 9000:9000 \
+                    -v my-custom-volume:/project-app/logs \
+                    --name app-container \
+                    $USERNAME/my-app-images:latest  
+
+            - name: docker images and container list
+              run: docker images 
+            - run: docker container ls
+            
+            - name: show container status
+              run: docker ps | grep app-container
+
+
+    health-monitoring:
+        runs-on: self-hosted
+        needs: Deploy-and-monitoring
+
+
+        steps:
+          - name: checkout container logs 
+            run: docker logs app-container --tail 33
+
+
+
+
+            
