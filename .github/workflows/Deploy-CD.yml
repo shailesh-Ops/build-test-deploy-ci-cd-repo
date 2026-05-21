@@ -2,7 +2,7 @@ name: CD for python application
 
 on:
     workflow_run:
-        workflows: [ " this is ci for python app " ]
+        workflows: ["this is ci for python app"]
         types:
             - completed
         branches:
