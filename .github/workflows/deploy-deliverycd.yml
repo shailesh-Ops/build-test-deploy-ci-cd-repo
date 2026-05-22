@@ -11,7 +11,7 @@ on:
 jobs:
     Deploy-and-monitoring:
         runs-on: self-hosted
-        # environment: production
+        environment: production
 
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
@@ -35,17 +35,17 @@ jobs:
                     docker stop app-container || true
                     docker rm app-container || true
 
-            # - name: i will create custom volume 
-            #   run: |
-            #         docker volume create \
-            #         -d local \
-            #         -o type=none \
-            #         -o o=bind \
-            #         -o device=/docker-mount/logs \
-            #         my-custom-volume     # this is volume name
+            - name: i will create custom volume 
+              run: |
+                    docker volume create \
+                    -d local \
+                    -o type=none \
+                    -o o=bind \
+                    -o device=/docker-mount/logs \
+                    my-custom-volume     # this is volume name
 
-            # - name: checkout if volume is create or not
-            #   run: docker volume ls        
+            - name: checkout if volume is create or not
+              run: docker volume ls        
                     
             - name: run latest new an container 
               run: |
