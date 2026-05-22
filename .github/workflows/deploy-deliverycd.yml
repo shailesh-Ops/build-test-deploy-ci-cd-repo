@@ -1,78 +1,118 @@
-name: CD for python application
+name: cd for python applicatin to deploy
 
 on:
+    
     workflow_run:
-        workflows: ["this is ci for python app"]
+        workflows: [" this is ci for python app "]
         types:
             - completed
         branches:
             - main
 
 jobs:
-    Deploy-and-monitoring:
+    deploy-and-pull:
         runs-on: self-hosted
         environment: production
 
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        permissions:
+            contents: read
+
+        if: ${{github.event.workflow_run.conclusion == 'successed' }}
+
+        steps:
+            - name: checkout code 
+              uses: actions/checkout@v4
+
+            # - name: dockerhub.oi for login  # this is first point to login with dockerhub
+            #   run: echo "${{secrets.DOCKER_LOGIN_PASS}}" |  docker pull -u  "${{secrets.DOCKER_USER_NAME}}"  --pasword-stdin
+            
+
+            - name: login to Dockerhub.io
+              uses: docker/login-action@v4  # this is second point for dockerhub login
+              with:
+                username: ${{secrets.DOCKER_USER_NAME}} 
+                password: ${{secrets.DEVOPS_LOGIN_PASS}}
+            
+        
+            - name: dockerhub.io from pull latest images
+              run: |
+                     USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
+                     docker pull $USERNAME/images-from-dhub:latest
+
+                # now second stage of cd
+    restart-container:
+        needs: deploy-and-pull 
+        runs-on: self-hosted
+        environment: staging 
+
+        permissions:
+            contents: read
 
         steps:
 
-            - name: checkout code
+            - name: checkout code 
               uses: actions/checkout@v4
 
-
-            - name: login to dockerhub.io
-              run: echo "${{ secrets.DOCKER_LOGIN_PASS}}" | docker login -u "${{ secrets.DOCKER_USER_NAME}}" --password-stdin
-
-            - name: pull latest image from dockerhub.io
+            - name: stop old container's
               run: |
-                    USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')   
-                    docker pull $USERNAME/my-app-images:latest
-  
-
-            - name: stop and remove old container 
+                     docker stop app-container-py || ture  
+                     docker rm -f app-container-py || true 
+              
+            - name: i will create mounted path means an volume
               run: |
-                    docker stop app-container || true
-                    docker rm app-container || true
-
-            - name: i will create custom volume 
-              run: |
-                    docker volume create \
+                    docker volume crearte \
                     -d local \
                     -o type=none \
                     -o o=bind \
-                    -o device=/docker-mount/logs \
-                    my-custom-volume     # this is volume name
-
-            - name: checkout if volume is create or not
-              run: docker volume ls        
+                    -o divice=/docker-mount/logs \
+                    custom-volume   
                     
-            - name: run latest new an container 
+            - name: this step insure volume are created
+              run: docker volume ls | grep custom-volume        # this is custom volume name 
+
+            - name: now createe custom network for best prectices
+              run: |                                                  # -d stand for network Diver  
+                    docker network create -d bridge custom-network                 
+            - name: now insure network is craeted or not
+              run: docker network ls | grep custom-network
+
+
+            - name: re-start  fresh container remove old one's
               run: |
-                    USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
+                    USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]') 
                     docker run -d -p 9000:9000 \
-                    -v my-custom-volume:/project-app/logs \
-                    --name app-container \
-                    $USERNAME/my-app-images:latest  
+                    -v custom-volume:/projet-app/mount-app \
+                    --network custom-network \
+                    --name app-container-py  \
+                    $USERNAME/images-from-dhub:latest
 
-            - name: docker images and container list
-              run: docker images 
-            - run: docker container ls
-            
-            - name: show container status
-              run: docker ps | grep app-container
-
-
-    health-monitoring:
+    health-monitoring:                          # final stage  of cd 
+        needs: restart-container
         runs-on: self-hosted
-        needs: Deploy-and-monitoring
-
+        environment: release
+        permissions:
+            contents: read
 
         steps:
-          - name: checkout container logs 
-            run: docker logs app-container --tail 33
+
+            - name: checkout code 
+              uses: actions/checkout@v6
+
+            - name: check runing status/proccess 
+              run: |
+                    docker ps | grep app-container-py
+                    
+            - name: list out current images and container  docker 
+              run: |
+                    docker images         
+                    docker container ls                           # this line only saw rung container's 
+
+            - name: health check via curl
+              run: |
+                    sleep 10s
+                    curl --file http://${{secrets.SERVER_HOST}}:9000/health       
+                    echo "python application are is live"
 
 
 
 
-            
