@@ -28,7 +28,7 @@ jobs:
 
       - name: test python application code   # this is test step
         working-directory: ./server-app
-        run: pytest server-app/ -v # -v means vorbose display excuted dependencies and requirement's 
+        run: pytest ./server-app  -v # -v means vorbose display excuted dependencies and requirement's 
                 
 
       - name: login to Dockerhub.io       # this section are login on DockerHub.io
