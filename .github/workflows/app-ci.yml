@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-run:
+  build-and-run:            # this is build step
     runs-on: ubuntu-latest
 
 
@@ -26,12 +26,12 @@ jobs:
               pip install -r requirements.txt  
               pip install pytest  
 
-      - name: test python application code 
+      - name: test python application code   # this is test step
         working-directory: ./server-app
-        run: pytest tests/ -v # -v means vorbose display excuted dependencies and requirement's 
+        run: pytest server-app/ -v # -v means vorbose display excuted dependencies and requirement's 
                 
 
-      - name: login to Dockerhub.io
+      - name: login to Dockerhub.io       # this section are login on DockerHub.io
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USER_NAME }}
@@ -41,12 +41,12 @@ jobs:
         working-directory: ./server-app
         run: |
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          docker build -t $USERNAME/my-app-images:latest .    #  force lowercase
+          docker build -t $USERNAME/images-from-dhub:latest .    #  force lowercase
             
 
       - name: push images on Dockerhub.io
         run: |
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          docker push $USERNAME/my-app-images:latest           # force lowercase
+          docker push $USERNAME/images-from-dhub:latest           # force lowercase
 
       
