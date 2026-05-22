@@ -30,10 +30,4 @@ jobs:
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
           docker push $USERNAME/my-app-images:latest           # force lowercase
 
-      - name: spins the container for images base
-        run: |
-          USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          docker run -d -p 9000:9000 \
-          -v /project/docker-app:/project-app \
-          --name app-container \
-          $USERNAME/my-app-images:latest                       #  force lowercase
+      
