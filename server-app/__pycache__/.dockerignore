@@ -1,0 +1,36 @@
+# .dockerignore
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+
+# ===== Virtual Environment =====
+venv/
+env/
+.venv/
+
+# ===== Tests (don't copy tests into Docker image) =====
+tests/
+test_*.py
+
+# ===== Git =====
+.git/
+.gitignore
+.github/
+
+# ===== Logs =====
+*.log
+
+# ===== VS Code =====
+.vscode/
+
+# ===== OS Files =====
+.DS_Store
+Thumbs.db
+
+# ===== Secrets =====
+.env
+*.env
+secrets.txt
