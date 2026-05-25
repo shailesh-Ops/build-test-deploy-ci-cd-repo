@@ -1,4 +1,15 @@
 # this is simple test file which is in folder name tests 
 
-def test_file():
-    assert 1 + 1 = 2  # this is simple code for quick pytest excute 
+from flask import Flask
+
+
+source="DevOps-Engineer and more v6"
+app = Flask(__name__)
+
+@app.route("/")
+
+def hello_server():
+    return {" message ": f"hello from : {source}" }
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0',port=9000,debug=True) 
