@@ -61,10 +61,10 @@ jobs:
             - name: i will create mounted path means an volume
               run: |
                     docker volume crearte \
-                    -d local \
-                    -o type=none \
-                    -o o=bind \
-                    -o device=/docker-mount/logs \
+                    --driver local \
+                    --opt type=none \
+                    --opt o=bind \
+                    --opt device=/docker-mount/logs \
                     custom-volume   
                     
             - name: this step insure volume are created
