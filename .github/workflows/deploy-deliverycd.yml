@@ -1,9 +1,9 @@
-name: cd for python applicatin to deploy
+name: CD for python applicatin to deploy
 
 on:
     
     workflow_run:
-        workflows: ["this is ci for python app"]
+        workflows: ["this ci for python app"]
         types:
             - completed
         branches:
