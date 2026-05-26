@@ -3,7 +3,7 @@ name: CD FOR PYTHON APPLICATION
 on:
     
     workflow_run:
-        workflows: ["CI FOR PYTHON APLICATION"]
+        workflows: ["CI FOR PYTHON APPLICATION"]
         types:
             - completed
         branches:
