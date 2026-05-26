@@ -14,8 +14,8 @@ jobs:
         runs-on: self-hosted
         environment: production
 
-        permissions:
-            contents: read
+        # permissions:
+        #     contents: read
 
         if: ${{github.event.workflow_run.conclusion == 'success' }}
 
@@ -45,8 +45,7 @@ jobs:
         runs-on: self-hosted
         environment: staging 
 
-        permissions:
-            contents: read
+        
 
         steps:
 
@@ -90,8 +89,8 @@ jobs:
         needs: restart-container
         runs-on: self-hosted
         environment: release
-        permissions:
-            contents: read
+        # permissions:
+        #     contents: read
 
         steps:
 
