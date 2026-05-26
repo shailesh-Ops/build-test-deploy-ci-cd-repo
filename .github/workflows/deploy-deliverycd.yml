@@ -60,7 +60,7 @@ jobs:
               
             - name: i will create mounted path means an volume
               run: |
-                    docker volume crearte \
+                    docker volume create  \
                     --driver local \
                     --opt type=none \
                     --opt o=bind \
