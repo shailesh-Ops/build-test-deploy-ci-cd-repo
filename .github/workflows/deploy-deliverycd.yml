@@ -1,9 +1,9 @@
-name: CD for python applicatin to deploy
+name: CD FOR PYTHON APPLICATION 
 
 on:
     
     workflow_run:
-        workflows: ["this ci for python app"]
+        workflows: ["CI FOR PYTHON APLICATION"]
         types:
             - completed
         branches:
@@ -36,8 +36,8 @@ jobs:
         
             - name: dockerhub.io from pull latest images
               run: |
-                     USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
-                     docker pull $USERNAME/images-from-dhub:latest
+                    USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
+                    docker pull $USERNAME/images-from-dhub:latest
 
                 # now second stage of cd
     restart-container:
@@ -55,8 +55,8 @@ jobs:
 
             - name: stop old container's
               run: |
-                     docker stop app-container-py || true  
-                     docker rm -f app-container-py || true 
+                    docker stop app-container-py || true  
+                    docker rm -f app-container-py || true 
               
             - name: i will create mounted path means an volume
               run: |
@@ -72,7 +72,7 @@ jobs:
 
             - name: now createe custom network for best prectices
               run: |                                                  # -d stand for network Diver  
-                    docker network create -d bridge custom-network                 
+                    docker network create -d bridge custom-network || true              
             - name: now insure network is craeted or not
               run: docker network ls | grep custom-network
 
@@ -110,7 +110,7 @@ jobs:
             - name: health check via curl
               run: |
                     sleep 10s
-                    curl --fail http://${{secrets.SERVER_HOST}}:9000/health       
+                    curl --fail http://${{ secrets.SERVER_HOST }}:9000/health       
                     echo "python application are is live"
 
 

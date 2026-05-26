@@ -1,4 +1,4 @@
-name: this ci for python app 
+name: CI FOR PYTHON APPLICATION 
 
 on:
   push:
