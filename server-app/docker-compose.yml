@@ -19,6 +19,16 @@ services:
     build:
       context: .   # current path using . 
       dockerfile: Dockerfile 
+
+      # config watch for test purpose 
+    develop:
+      watch:
+      - action: sync              # sync file without rebuild 
+        path: .                   # watch current folder 
+        target: /project-app       # copy to this path on container 
+      - action: rebuild               # rebuild if this file was chenge
+        path: requirements.txt
+
     image: ${DOCKER_USER_NAME}/app-images-python:latest    # create image by using this one name
     container_name: new-py-container                       # container name 
 
@@ -37,22 +47,17 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
       interval: 5s
       timeout: 5s
-      retries: 6
+      retries: 5
       start_period: 10s
 
 volumes:
   custom-volume:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /docker-mount/logs
+    # driver_opts:
+    #   type: none
+    #   o: bind
+    #   device: /docker-mount/logs
 
 networks:
   custom-network:
-    driver: bridge
-
-
-
-
-
+    driver: bridge 

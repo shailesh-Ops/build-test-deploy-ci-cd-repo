@@ -26,19 +26,19 @@ def client():
 
 # ---- Test 1 ----
 def test_home_status_code(client):    # ← client comes from fixture above
-    response = client.get("/")
+    response = client.get("/health")
     assert response.status_code == 200
 
 
 # ---- Test 2 ----
 def test_home_message(client):
-    response = client.get("/")
+    response = client.get("/health")
     data = json.loads(response.data)
     assert " message " in data
 
 
 # ---- Test 3 ----
 def test_source_value(client):
-    response = client.get("/")
+    response = client.get("/health")
     data = json.loads(response.data)
     assert "DevOps-Engineer" in data[" message "]
