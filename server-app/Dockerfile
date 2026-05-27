@@ -13,7 +13,7 @@ WORKDIR /project-app/workflow
 COPY requirements.txt .
 
 RUN pip install --upgrade pip \
-    && pip install -r --no-cache-dir requirements.txt
+    && pip install --no-cache-dir -r  requirements.txt
 
 COPY . .
 
