@@ -41,12 +41,12 @@ jobs:
         working-directory: ./server-app
         run: |
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          docker build -t $USERNAME/images-from-dhub:latest .    #  force lowercase
+          docker build -t $USERNAME/app-images-python:latest .    #  force lowercase
             
 
       - name: push images on Dockerhub.io
         run: |
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          docker push $USERNAME/images-from-dhub:latest           # force lowercase
+          docker push $USERNAME/app-images-python:latest           # force lowercase
 
       
