@@ -19,7 +19,7 @@ services:
     build:
       context: .   # current path using . 
       dockerfile: Dockerfile 
-    image: ${DOCKER_USERNAME}/app-images-python:latest    # create image by using this one name
+    image: ${DOCKER_USER_NAME}/app-images-python:latest    # create image by using this one name
     container_name: new-py-container                       # container name 
 
     ports:
