@@ -17,7 +17,7 @@
 services:
   server-app:
     build:
-      context: .
+      context: ./server-app
       dockerfile: Dockerfile 
     image: ${DOCKER_USERNAME}/app-images-python:latest  . 
     container_name: new-py-container

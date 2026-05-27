@@ -44,6 +44,7 @@ jobs:
 
       - name: run's new container and remove old one's
         run: |
+              cd server-app
               USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
               DOCKER_USER_NAME=$USERNAME docker compose down --remove-orphans
               DOCKER_USER_NAME=$USERNAME docker compose up -d --build --wait 
