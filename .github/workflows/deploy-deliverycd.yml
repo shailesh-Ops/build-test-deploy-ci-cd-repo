@@ -1,120 +1,85 @@
-name: CD FOR PYTHON APPLICATION 
+name: CD for python applicaation 
 
 on:
-    
-    workflow_run:
-        workflows: ["CI FOR PYTHON APPLICATION"]
-        types:
-            - completed
-        branches:
-            - main
-
+  workflow_run:
+     workflows: ["CI FOR PYTHON APPLICATION"]
+     types:
+      - completed
+     branches:
+      - main  
+      
 jobs:
-    deploy-and-pull:
-        runs-on: self-hosted
-        environment: production
+  deploy-and-pull:
+    runs-on: self-hosted
+    environment: production
 
-        permissions:
-            contents: read
+    steps:
+    - name: check code
+      uses: actions/checkout@v4
 
-        if: ${{github.event.workflow_run.conclusion == 'success' }}
+    - name: login DockerHub.io 
+      uses: docker/login-action@v3
+      with:
+        username: ${{secrets.DOCKER_USER_NAME}}
+        password: ${{secrets.DOCKER_LOGIN_PASS}}
 
-        steps:
-            - name: checkout code 
-              uses: actions/checkout@v4
 
-            # - name: dockerhub.oi for login  # this is first point to login with dockerhub
-            #   run: echo "${{secrets.DOCKER_LOGIN_PASS}}" |  docker pull -u  "${{secrets.DOCKER_USER_NAME}}"  --pasword-stdin
-            
+    - name: pull image from Dockerhub.io
+      run: |
+            USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
+            docker pull -u $USERNAME/app-images-python:latest 
 
-            - name: login to Dockerhub.io
-              uses: docker/login-action@v3  # this is second point for dockerhub login
-              with:
-                username: ${{secrets.DOCKER_USER_NAME}} 
-                password: ${{secrets.DOCKER_LOGIN_PASS}}
-            
-        
-            - name: dockerhub.io from pull latest images
-              run: |
-                    USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
-                    docker pull $USERNAME/images-from-dhub:latest
+  up-and-run-container:
+    runs-on: self-hosted
+    needs: deploy-and-pull
+    environment: staging
+    
+    permissions:
+      contents: read
 
-                # now second stage of cd
-    restart-container:
-        needs: deploy-and-pull 
-        runs-on: self-hosted
-        environment: staging 
+    steps:
 
-        permissions:
-          contents: read
+      - name: checkout bug's 
+        uses: actions/checkout@v4
 
-        
-
-        steps:
-
-            - name: checkout code 
-              uses: actions/checkout@v4
-
-            - name: stop old container's
-              run: |
-                    docker stop app-container-py || true  
-                    docker rm -f app-container-py || true 
+      - name: run's new container and remove old one's
+        run: |
+              USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
+              DOCKER_USER_NAME = $USERNAME docker compose down --remove-orphans
+              DOCKER_USER_NAME = $USERNAME docker compose up -d --build --wait 
               
-            - name: i will create mounted path means an volume
-              run: |
-                    docker volume create  \
-                    --driver local \
-                    --opt type=none \
-                    --opt o=bind \
-                    --opt device=/docker-mount/logs \
-                    custom-volume   
-                    
-            - name: this step insure volume are created
-              run: docker volume ls | grep custom-volume        # this is custom volume name 
+              
+  health-check:
+    runs-on: self-hosted
+    needs: up-and-run-container
+    environment: release
 
-            - name: now createe custom network for best prectices
-              run: |                                                  # -d stand for network Diver  
-                    docker network create -d bridge custom-network || true              
-            - name: now insure network is craeted or not
-              run: docker network ls | grep custom-network
+    permissions:
+      contents: read
 
 
-            - name: re-start  fresh container remove old one's
-              run: |
-                    USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]') 
-                    docker run -d -p 9000:9000 \
-                    -v custom-volume:/project-app/mount-app \
-                    --network custom-network \
-                    --name app-container-py  \
-                    $USERNAME/images-from-dhub:latest
+    steps:
 
-    health-monitoring:                          # final stage  of cd 
-        needs: restart-container
-        runs-on: self-hosted
-        environment: release
-        permissions:
-          contents: read
+      - name: checkout all code 
+        uses: actions/checkout@v4
 
-        steps:
+      - name: checkout container status
+        run: |
+              docker ps | grep  app-py-container 
+              docker images
+              docker container ls   # it's show only running container's 
 
-            - name: checkout code 
-              uses: actions/checkout@v4
+      - name: check with curl command 
+        run: |
+              echo "waiting for server response"
+              loop time in {1..15}; do
+               
+              curl --fail "http://${{ secrets.SERVER_HOST }}:9000/health" && break
 
-            - name: check runing status/proccess 
-              run: |
-                    docker ps | grep app-container-py
-                    
-            - name: list out current images and container  docker 
-              run: |
-                    docker images         
-                    docker container ls                           # this line only saw rung container's 
+              echo "curl fail at here , retrying with 3s"
+              sleep 3s
 
-            - name: health check via curl
-              run: |
-                    sleep 10s
-                    curl --fail http://${{secrets.SERVER_HOST}}:9000/health       
-                    echo "python application are is live"
-
-
+              done 
+              echo "app is runing on port......... >> 9000"
 
 
