@@ -27,7 +27,7 @@ jobs:
     - name: pull image from Dockerhub.io
       run: |
             USERNAME=$(echo "${{secrets.DOCKER_USER_NAME}}" | tr '[:upper:]' '[:lower:]')
-            docker pull -u $USERNAME/app-images-python:latest 
+            docker pull  $USERNAME/app-images-python:latest 
 
   up-and-run-container:
     runs-on: self-hosted
