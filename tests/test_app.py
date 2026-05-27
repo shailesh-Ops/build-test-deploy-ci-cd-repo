@@ -34,11 +34,11 @@ def test_home_status_code(client):    # ← client comes from fixture above
 def test_home_message(client):
     response = client.get("/health")
     data = json.loads(response.data)
-    assert " message " in data
+    assert "message" in data
 
 
 # ---- Test 3 ----
 def test_source_value(client):
     response = client.get("/health")
     data = json.loads(response.data)
-    assert "DevOps-Engineer" in data[" message "]
+    assert "DevOps-Engineer" in data["message"]
