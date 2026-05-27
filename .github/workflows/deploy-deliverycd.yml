@@ -69,7 +69,7 @@ jobs:
       - name: check with curl command
         run: |
           echo "waiting for server response"
-          loop time in {1..15}; do
+          for time in {1..15}; do
           curl --fail "http://${{ secrets.SERVER_HOST }}:9000/health" && break
 
           echo "curl fail at here , retrying with 3s"
