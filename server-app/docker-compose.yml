@@ -1,16 +1,58 @@
-version: '3.11'
+# version: '3.11'
+
+# services:
+#   web-app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     image: docker-app:v2.2
+#     container_name: docker-container-v2.2
+    
+#     volumes:
+#       - /docker-mount/logs:/project-app/logs 
+
+#     ports:
+#       - "9000:9000"
 
 services:
-  web-app:
+  server-app:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: docker-app:v2.2
-    container_name: docker-container-v2.2
-    
-    volumes:
-      - /docker-mount/logs:/project-app/logs 
+      dockerfile: Dockerfile 
+    image: ${DOCKER_USERNAME}/app-images-python:latest  . 
+    container_name: new-py-container
 
     ports:
       - "9000:9000"
+
+    volumes_from:
+      - custom-volume:/project-app/logs
+
+    networks:
+      - custom-network
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 5s
+      timeout: 8s
+      retries: 10
+      # start_period: 30s
+
+volumes:
+  custom-volume:
+    driver: local 
+    driver_opts:
+     type: None
+     o: bind
+     device: /docker-mount/logs
+
+networks:
+  custom-network:
+    driver: bridge
+
+
+
+
 
