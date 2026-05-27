@@ -44,8 +44,8 @@ jobs:
         run: |
           cd server-app
           export USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          docker compose down --remove-orphans
-          docker compose up -d --build --wait
+          DOCKER_USER_NAME=$USERNAME/docker compose down --remove-orphans
+          DOCKER_USER_NAME=$USERNAME/docker compose up -d --build --wait
 
   health-check:
     runs-on: self-hosted
