@@ -3,20 +3,20 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-RUN apt-get update && upgrade --on-install-recommends \
+RUN apt-get update && apt-get install -y --on-install-recommends \
     curl \
     build-essential \
     && rm -rf /var/lib/apt/lists/.   
     
-    WORKDIR /project-app/workflow
+WORKDIR /project-app/workflow
 
-    COPY requirements.txt .
+COPY requirements.txt .
 
-    RUN pip install --upgrade pip \
-        && pip install -r --no-cache-dir requirements.txt
+RUN pip install --upgrade pip \
+    && pip install -r --no-cache-dir requirements.txt
 
-    COPY . .
+COPY . .
 
-    EXPOSE 9000
+EXPOSE 9000
 
-    CMD [ "python", "app.py" ]
+CMD [ "python", "app.py" ]
