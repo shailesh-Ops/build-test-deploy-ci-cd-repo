@@ -36,9 +36,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
       interval: 5s
-      timeout: 8s
-      retries: 10
-      start_period:  30s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
 
 volumes:
   custom-volume:

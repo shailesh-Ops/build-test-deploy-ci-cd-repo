@@ -1,27 +1,22 @@
-FROM python:3.11-slim 
+FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-WORKDIR /project-app
-
-
-RUN  apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && upgrade --on-install-recommends \
+    curl \
     build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
-
-RUN pip install --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt 
-
-
-COPY . .
-
-EXPOSE 9000
-
-CMD [ "python", "app.py" ]
-
-
- 
+    && rm -rf /var/lib/apt/lists/.   
     
+    WORKDIR /project-app/workflow
+
+    COPY requirements.txt .
+
+    RUN pip install --upgrade pip \
+        && pip install -r --no-cache-dir requirements.txt
+
+    COPY . .
+
+    EXPOSE 9000
+
+    CMD [ "python", "app.py" ]

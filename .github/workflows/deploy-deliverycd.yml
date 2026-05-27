@@ -43,9 +43,9 @@ jobs:
       - name: run's new container and remove old one's
         run: |
           cd server-app
-          USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          DOCKER_USER_NAME=$USERNAME docker compose down --remove-orphans
-          DOCKER_USER_NAME=$USERNAME docker compose up -d --build --wait
+          export USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
+          docker compose down --remove-orphans
+          docker compose up -d --build --wait
 
   health-check:
     runs-on: self-hosted
@@ -61,7 +61,7 @@ jobs:
 
       - name: checkout container status
         run: |
-          docker ps | grep  app-py-container 
+          docker ps | grep  new-py-container 
           docker images
           docker container ls   # it's show only running container's
 
