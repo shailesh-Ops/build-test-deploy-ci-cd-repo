@@ -42,11 +42,10 @@ services:
 
 volumes:
   custom-volume:
-    driver: local 
-    driver_opts:
-     type: None
-     o: bind
-     device: /docker-mount/logs
+     driver_opts:
+      type: None
+      o: bind
+      device: /docker-mount/logs
 
 networks:
   custom-network:
