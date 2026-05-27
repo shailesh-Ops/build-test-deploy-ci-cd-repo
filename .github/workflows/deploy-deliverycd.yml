@@ -1,55 +1,52 @@
-name: CD for python applicaation 
+name: CD for python applicaation
 
 on:
   workflow_run:
-     workflows: ["CI FOR PYTHON APPLICATION"]
-     types:
+    workflows: ["CI FOR PYTHON APPLICATION"]
+    types:
       - completed
-     branches:
-      - main  
-      
+    branches:
+      - main
+
 jobs:
   deploy-and-pull:
     runs-on: self-hosted
     environment: production
 
     steps:
-    - name: check code
-      uses: actions/checkout@v4
+      - name: check code
+        uses: actions/checkout@v4
 
-    - name: login DockerHub.io 
-      uses: docker/login-action@v3
-      with:
-        username: ${{secrets.DOCKER_USER_NAME}}
-        password: ${{secrets.DOCKER_LOGIN_PASS}}
+      - name: login DockerHub.io
+        uses: docker/login-action@v3
+        with:
+          username: ${{secrets.DOCKER_USER_NAME}}
+          password: ${{secrets.DOCKER_LOGIN_PASS}}
 
-
-    - name: pull image from Dockerhub.io
-      run: |
-            USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-            docker pull  $USERNAME/app-images-python:latest 
+      - name: pull image from Dockerhub.io
+        run: |
+          USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
+          docker pull  $USERNAME/app-images-python:latest
 
   up-and-run-container:
     runs-on: self-hosted
     needs: deploy-and-pull
     environment: staging
-    
+
     permissions:
       contents: read
 
     steps:
-
-      - name: checkout bug's 
+      - name: checkout bug's
         uses: actions/checkout@v4
 
       - name: run's new container and remove old one's
         run: |
-              cd server-app
-              USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-              DOCKER_USER_NAME=$USERNAME docker compose down --remove-orphans
-              DOCKER_USER_NAME=$USERNAME docker compose up -d --build --wait 
-              
-              
+          cd server-app
+          USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
+          DOCKER_USER_NAME=$USERNAME docker compose down --remove-orphans
+          DOCKER_USER_NAME=$USERNAME docker compose up -d --build --wait
+
   health-check:
     runs-on: self-hosted
     needs: up-and-run-container
@@ -58,29 +55,24 @@ jobs:
     permissions:
       contents: read
 
-
     steps:
-
-      - name: checkout all code 
+      - name: checkout all code
         uses: actions/checkout@v4
 
       - name: checkout container status
         run: |
-              docker ps | grep  app-py-container 
-              docker images
-              docker container ls   # it's show only running container's 
+          docker ps | grep  app-py-container 
+          docker images
+          docker container ls   # it's show only running container's
 
-      - name: check with curl command 
+      - name: check with curl command
         run: |
-              echo "waiting for server response"
-              loop time in {1..15}; do
-               
-              curl --fail "http://${{ secrets.SERVER_HOST }}:9000/health" && break
+          echo "waiting for server response"
+          loop time in {1..15}; do
+          curl --fail "http://${{ secrets.SERVER_HOST }}:9000/health" && break
 
-              echo "curl fail at here , retrying with 3s"
-              sleep 3s
+          echo "curl fail at here , retrying with 3s"
+          sleep 3s
 
-              done 
-              echo "app is runing on port......... >> 9000"
-
-
+          done 
+          echo "app is runing on port......... >> 9000"
