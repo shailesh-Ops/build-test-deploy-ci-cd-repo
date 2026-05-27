@@ -17,19 +17,19 @@
 services:
   server-app:
     build:
-      context: ./server-app
+      context: .   # current path using . 
       dockerfile: Dockerfile 
-    image: ${DOCKER_USERNAME}/app-images-python:latest  . 
-    container_name: new-py-container
+    image: ${DOCKER_USERNAME}/app-images-python:latest    # create image by using this one name
+    container_name: new-py-container                       # container name 
 
     ports:
       - "9000:9000"
 
-    volumes_from:
-      - custom-volume:/project-app/logs
+    volumes:
+      - custom-volume:/project-app/logs                    # add custom volume path 
 
     networks:
-      - custom-network
+      - custom-network                            # create custom network
 
     restart: unless-stopped
 
@@ -42,8 +42,9 @@ services:
 
 volumes:
   custom-volume:
-     driver_opts:
-      type: None
+    driver: local
+    driver_opts:
+      type: none
       o: bind
       device: /docker-mount/logs
 
