@@ -21,7 +21,7 @@ jobs:
       - name: create auto versioning tag's
         id: version
         run: |
-              LATEST_TAG=(git tag --sort=v:refname | head -n 1)
+              LATEST_TAG=$(git tag --sort=v:refname | head -n 1)
 
               if [ -z "$LATEST_TAG" ]; then
                 NEW_TAG="1.0.0"
