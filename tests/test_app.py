@@ -41,4 +41,4 @@ def test_home_message(client):
 def test_source_value(client):
     response = client.get("/health")
     data = json.loads(response.data)
-    assert "DevOps-Engineer" in data ["status"]
+    assert "DevOps-Engineer" in data ["message"]
