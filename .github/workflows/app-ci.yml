@@ -26,9 +26,9 @@ jobs:
               if [ -z "$LATEST_TAG" ]; then
                 NEW_TAG="v1.0.0"
               else
-                MAJOR=$(echo "$LATEST_TAG" cut -d. -f1 | tr -d 'v')
-                MINOR=$(echo "$LATEST_TAG" cut -d. -f2)
-                PATCH=$(echo "$LATEST_TAG" cut -d. -f3)
+                MAJOR=$(echo "$LATEST_TAG" | cut -d. -f1 | tr -d 'v')
+                MINOR=$(echo "$LATEST_TAG" | cut -d. -f2)
+                PATCH=$(echo "$LATEST_TAG" | cut -d. -f3)
 
                 PATCH=$((PATCH + 1))
                 NEW_TAG="v$MAJOR.$MINOR.$PATCH"
@@ -63,11 +63,11 @@ jobs:
         working-directory: ./server-app
         run: |
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          git tag ${{ steps.version.outputs.new_tag }}
-          git tag push origin ${{ steps.version.outputs.new_tag }}
+          VERSION=${{ steps.version.outputs.new_tag }}
 
-          docker build -t $USERNAME/app-images-python:$VERSION 
-          docker build -t $USERNAME/app-images-python:latest .    #  force lowercase
+          docker build -t \
+          $USERNAME/app-images-python:$VERSION \
+          $USERNAME/app-images-python:latest .    #  force lowercase
             
 
       - name: push images on Dockerhub.io with ther tag's
@@ -76,12 +76,16 @@ jobs:
           VERSION=${{ steps.version.outputs.new_tag }}
 
           docker push $USERNAME/app-images-python:$VERSION 
-          docker push $USERNAME/app-images-python:latest           # force lowercase
+          docker push $USERNAME/app-images-python:latest       # force lowercase
+      
+
       - name: github with configure bot user and email for reliable stage push
         run: |
               git config user.name "github-actions"
               git config user.email "githubactions@gmail.com"
 
-              git tag  -a ${{ steps.version.outputs.new_tag }} -m "release new tag"
+              VERSION=${{ steps.version.outputs.new_tag }}
+
+              git tag  -a $VERSION -m "release NEW AN: $VERSION TAG.."
               git push origin $VERSION  # push to  github tag repo in , not branche in
       
