@@ -21,10 +21,10 @@ jobs:
       - name: create auto versioning tag's
         id: version
         run: |
-              LATEST_TAG=$(git tag --sort=v:refname | head -n 1)
+              LATEST_TAG=$(git tag --sort=-v:refname | head -n 1)
 
               if [ -z "$LATEST_TAG" ]; then
-                NEW_TAG="1.0.0"
+                NEW_TAG="v1.0.0"
               else
                 MAJOR=$(echo "$LATEST_TAG" cut -d. -f1 | tr -d 'v')
                 MINOR=$(echo "$LATEST_TAG" cut -d. -f2)
@@ -34,11 +34,9 @@ jobs:
                 NEW_TAG="v$MAJOR.$MINOR.$PATCH"
               fi  
 
-              echo "new_tag=$NEW_TAG" >> "GITHUB_OUTPUT"      # final step, this is define new variable with called new_tag
+              echo "new_tag=$NEW_TAG" >> "$GITHUB_OUTPUT"      # final step, this is define new variable with called new_tag
               echo "now generated LATEST TAG IS: $NEW_TAG "
-      - name: checkout code
-        uses: actions/checkout@v4
-
+      
       - name: setup python 
         uses: actions/setup-python@v5
         with:
@@ -52,7 +50,7 @@ jobs:
 
       - name: test python application code   # this is test step
         working-directory: ./server-app
-        run: pytest ../tests/   -v # -v means vorbose display excuted dependencies and requirement's 
+        run: pytest tests/ -v # -v means vorbose display excuted dependencies and requirement's 
                 
 
       - name: login to Dockerhub.io       # this section are login on DockerHub.io
@@ -65,10 +63,11 @@ jobs:
         working-directory: ./server-app
         run: |
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          VERSION=${{ steps.version.outputs.new_tag }}
+          git tag ${{ steps.version.outputs.new_tag }}
+          git push origin ${{ steps.version.outputs.new_tag }}
 
           docker build -t $USERNAME/app-images-python:$VERSION \
-          -t $USERNAME/app-images-python:latest .    #  force lowercase
+          docker build -t $USERNAME/app-images-python:latest .    #  force lowercase
             
 
       - name: push images on Dockerhub.io with ther tag's
@@ -76,13 +75,13 @@ jobs:
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
           VERSION=${{ steps.version.outputs.new_tag }}
 
-          docker push $USERNAME/app-images-python:$VERSION \
+          docker push $USERNAME/app-images-python:$VERSION 
           docker push $USERNAME/app-images-python:latest           # force lowercase
       - name: github with configure bot user and email for reliable stage push
         run: |
               git config user.name "github-actions"
               git config user.email "githubactions@gmail.com"
 
-              git tag $VERSION
+              git tag  -a ${{ steps.version.outputs.new_tag }} -m "release new tag"
               git push origin $VERSION  # push to  github tag repo in , not branche in
       
