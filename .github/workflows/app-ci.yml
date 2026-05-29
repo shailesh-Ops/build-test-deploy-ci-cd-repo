@@ -65,9 +65,9 @@ jobs:
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
           VERSION=${{ steps.version.outputs.new_tag }}
 
-          docker build -t \
-          $USERNAME/app-images-python:$VERSION \
-          $USERNAME/app-images-python:latest .    #  force lowercase
+          docker build  \
+           -t $USERNAME/app-images-python:$VERSION \
+           -t $USERNAME/app-images-python:latest .    #  force lowercase
             
 
       - name: push images on Dockerhub.io with ther tag's
