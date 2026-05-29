@@ -63,9 +63,10 @@ jobs:
         working-directory: ./server-app
         run: |
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
-          VERSION=${{ steps.version.outputs.new_tag }}
+          git tag ${{ steps.version.outputs.new_tag }}
+          git tag push origin ${{ steps.version.outputs.new_tag }}
 
-          docker build -t $USERNAME/app-images-python:$VERSION \
+          docker build -t $USERNAME/app-images-python:$VERSION 
           docker build -t $USERNAME/app-images-python:latest .    #  force lowercase
             
 
