@@ -57,7 +57,7 @@ jobs:
       - name: show latest tag's approval was attache 
         run: |
               echo "Deploy images:"
-              docker inspect new-py-container --format='{{.config.image}}'  
+              docker inspect --format='{{.config.image}}'  new-py-container
   health-check:
     runs-on: self-hosted
     needs: up-and-run-container
