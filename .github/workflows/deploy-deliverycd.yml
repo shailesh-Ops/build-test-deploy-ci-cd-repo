@@ -27,8 +27,9 @@ jobs:
         run: |
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
 
-          docker pull $USERNAME/app-images-python$VERSION \
-          docker pull  $USERNAME/app-images-python:latest
+          docker pull \
+          $USERNAME/app-images-python$VERSION \
+          $USERNAME/app-images-python:latest
 
   up-and-run-container:
     runs-on: self-hosted
@@ -49,7 +50,7 @@ jobs:
           export DOCKER_USER_NAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
           docker compose down --remove-orphans
           docker compose up -d --build --wait
-          
+
       - name: show latest tag's approval was attache 
         run: |
               echo "Deploy images:"
