@@ -28,7 +28,7 @@ jobs:
           USERNAME=$(echo "${{ secrets.DOCKER_USER_NAME }}" | tr '[:upper:]' '[:lower:]')
 
           docker pull \
-          $USERNAME/app-images-python$VERSION \
+          $USERNAME/app-images-python:$VERSION \
           $USERNAME/app-images-python:latest
 
   up-and-run-container:
