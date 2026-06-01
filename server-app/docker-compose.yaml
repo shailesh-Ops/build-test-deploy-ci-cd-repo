@@ -26,6 +26,16 @@ services:
     networks:
       - custom-network-app
 
+
+  redis:
+    image: redis:latest
+    container_name: redis-cahe
+    ports:
+      - "6379:6379"
+    networks:
+      - custom-network-app
+      
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
       interval: 5s
