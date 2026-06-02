@@ -1,0 +1,12 @@
+kind: Namespace
+apiversion: v1
+metadata:
+  name: nginx-pod
+
+spec:
+  containers:
+  - name: nginx-pod
+    image: nginx:latest
+
+    ports:
+    - containerPort: 80
