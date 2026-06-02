@@ -26,6 +26,18 @@ services:
     networks:
       - custom-network-app
 
+
+  redis:
+    image: redis:latest
+    container_name: redis-cahe
+    ports:
+      - "6379:6379"
+    networks:
+      - custom-network-app
+    volumes:
+      - custom-volume-app:/project-app/logs
+
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
       interval: 5s
