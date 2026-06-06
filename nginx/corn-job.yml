@@ -14,41 +14,41 @@ spec:
         labels: corn-job-backup
         app: corn-job-backup
 
-        spec:
-          containers:
-            - name: schedule-backup
-              image: busybox:latest
-              imagePullPolicy: IfNotPresent
+          spec:
+            containers:
+              - name: schedule-backup
+                image: busybox:latest
+                imagePullPolicy: IfNotPresent
 
-              command:
-                - sh
-                - -c
-                - echo "this backup for cron jobs" ; 
-                - >
-                  mkdir -p backup-busybox-corn/ && 
-                   mkdir -p backup-data &&
-                   cp -r  backup-data backup-busybox-cron &&
-                   date; echo "this is step are successfully......completed" ;
+                command:
+                  - sh
+                  - -c
+                  - echo "this backup for cron jobs" ; 
+                  - >
+                    mkdir -p backup-busybox-corn/ && 
+                    mkdir -p backup-data &&
+                    cp -r  /backup-data/* /backup-busybox-cron/ &&
+                    date; echo "this is step are successfully......completed" ;
 
                  
-              volumesMounts:
-                - name: configer-storage-volume-source
-                  MountPath: /backup-data
-                - name: configer-storage-volume-backup
-                   MountPath: /backup-busybox-cron 
-              restartPolicy: OnFailure
+                volumeMounts:
+                  - name: configer-storage-volume-source
+                     mountPath: /backup-data
+                  - name: configer-storage-volume-backup
+                    mountPath: /backup-busybox-cron 
+                restartPolicy: OnFailure
 
 
-          volumes:
-            - name: config.volume.cluster-source
-              hostPath:
-                Path: /backup-data
-                type: DirectoryOrCreate
+            volumes:
+              - name: configer-storage-volume-source
+                hostPath:
+                  path: /backup-data
+                  type: DirectoryOrCreate
 
-            - name: config.volume.cluster-backup
-              hostPath:
-                Path: /backup-data
-                type: DirectoryOrCreate
+              - name: configer-storage-volume-backup
+                hostPath:
+                  path: /backup-data
+                  type: DirectoryOrCreate
 
             
 
