@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: corn-job-backup
+
+spec:
+  schedule: "*/2 * * * *"
+  JobTemplate:
+
+    spec:
+      templats:
+      metadata:
+        name: cron-jobs
+        labels: corn-job-backup
+        app: corn-job-backup
+
+        spec:
+          containers:
+            - name: schedule-backup
+              image: busybox:latest
+              imagePullPolicy: IfNotPresent
+
+              command:
+                - sh
+                - -c
+                - echo "this backup for cron jobs" ; 
+                - >
+                  mkdir -p backup-busybox-corn/ && 
+                   mkdir -p backup-data &&
+                   cp -r  backup-data backup-busybox-cron &&
+                   date; echo "this is step are successfully......completed" ;
+
+                 
+              volumesMounts:
+                - name: configer-storage-volume-source
+                  MountPath: /backup-data
+                - name: configer-storage-volume-backup
+                   MountPath: /backup-busybox-cron 
+              restartPolicy: OnFailure
+
+
+          volumes:
+            - name: config.volume.cluster-source
+              hostPath:
+                Path: /backup-data
+                type: DirectoryOrCreate
+
+            - name: config.volume.cluster-backup
+              hostPath:
+                Path: /backup-data
+                type: DirectoryOrCreate
+
+            
+
+                  
