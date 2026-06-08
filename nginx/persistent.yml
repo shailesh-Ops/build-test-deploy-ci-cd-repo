@@ -2,10 +2,11 @@ apiVersion: v1
 kind: PersistentVolume
 
 metadata:
-  name: pv
+  name: local-pv
+  namespace: defualt
   labels:
-    app: local-storage
-    namespace: nginx
+    app: local
+    
 
 spec:
   capacity:
@@ -14,7 +15,7 @@ spec:
     - ReadWriteOnce
 
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
+  storageClassName: local-pvc
   hostPath:
     path: /mnt/data
     

@@ -5,7 +5,6 @@ metadata:
   namespace: nginx 
   labels:
     app: nginx
-  namespace: nginx 
 
 spec:
   replicas: 3
@@ -15,21 +14,22 @@ spec:
 
   template:
     metadata:
+      name: nginx-deployment-pods
       labels:
         app: nginx
         
     spec:
       containers:
-      - name: nginx
+      - name: nginx-container
         image: nginx:latest
         ports: 
         - containerPort: 80
         volumeMounts:
-        - name: local-volume-nginx
-          mountPath: /var/www/html
+        - mountPath: /var/www/html
+          name: volume-pvc
 
       volumes:        
-        - name: local-volume-nginx
+        - name: volume-pvc
           persistentVolumeClaim: 
             claimName: local-pvc
 

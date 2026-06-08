@@ -1,17 +1,15 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
+
 metadata:
-  name: local-storage
-  namespace: nginx
-  labels:
-    app: local-storage
+  name: local-pvc
 
 spec:
-  storageClassName: local-storage
-
   accessModes:
   - ReadWriteOnce
 
   resources:
     requests:
       storage: 1Gi
+
+  storageClassName: local-storage    
