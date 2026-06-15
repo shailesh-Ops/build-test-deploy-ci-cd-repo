@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   name: server-app-deployment
   labels:
-    app: server-app 
-  namespace: server-app   
+    app: server-app  
+  namespace: nginx  
 spec:
   replicas: 3
   selector:
