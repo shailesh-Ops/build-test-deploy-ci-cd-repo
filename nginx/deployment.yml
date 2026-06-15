@@ -24,8 +24,21 @@ spec:
         image: nginx:latest
         ports: 
         - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 165Mi
+          limits:
+            cpu: 200m
+            memory: 265Mi
+        livenessProbe:         # see the pods(containers) livenessprobes means live state
+          httpGet:
+            path: /
+            port: 9000
+      
+
         volumeMounts:
-        - mountPath: /var/www/html
+        - mountPath: /usr/share/nginx/html
           name: volume-pvc
 
       volumes:        
