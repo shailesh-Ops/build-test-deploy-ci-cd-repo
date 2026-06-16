@@ -31,9 +31,9 @@ spec:
           limits:                                   # set an number of limits for pods resource's
             cpu: 200m
             memory: 265Mi
-        livenessProbe:         # see the pods(containers) livenessprobes means live state
-          httpGet:
-            path: /
+        livenessProbe:         # see the pods(containers) livenessprobes means live state 
+          httpGet:                # it's use for pods liveness to ensure it have three type's probe i'm use livenessprobe for saw pods status 
+            path: /                           
             port: 9000
       
 
