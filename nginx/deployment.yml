@@ -21,10 +21,10 @@ spec:
     spec:
       containers:                               # container creation using container and insaide create number of an pods 
       - name: nginx-container 
-        image: nginx:latest                     # image which is provide from docker and base image for pods
+        image: nginx:latest                     # image which is provide from dockerhub.io and base image for pods
         ports: 
         - containerPort: 80                     # expose port for communicate with out saide service's with together use 
-        resources:                              # add probes for specifie and fix and minimum cpu and memory use 
+        resources:                              # add request  for specifie and fix and minimum cpu and memory use 
           requests:                                 
             cpu: 100m
             memory: 165Mi
