@@ -5,4 +5,4 @@ metadata:
   namespace: mysql-ns
 
 data: 
-  MYSQL_DATABASE: "devopsdb"
+  MYSQL_DATABASE: "devopsdb" # never ever shear configmap file on github or publish on anywhere so this file is only demo file 
