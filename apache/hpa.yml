@@ -12,7 +12,7 @@ spec:
     kind: Deployment
     name: apche-deploument
   minReplicas: 1
-  maxReplicas: 20
+  maxReplicas: 15
 
   metrics:
   - type: Resource
@@ -20,7 +20,7 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 10 
+        averageUtilization: 5 
 
     
 
