@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: apche-hpa
+  name: apache-hpa
   namespace: apache-server
   labels:
     run: apache
