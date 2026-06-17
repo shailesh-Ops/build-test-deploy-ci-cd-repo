@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: apache-deployment-app
-          image: httpd:2.4
+          image: httpd:2.4 
           ports:
           - containerPort: 80 
           resources:
