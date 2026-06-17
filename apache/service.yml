@@ -5,7 +5,7 @@ metadata:
   namespace: apache-server
 spec:
   selector:
-    app: apache-service
+    run: apache
 
   type: ClusterIP
 
