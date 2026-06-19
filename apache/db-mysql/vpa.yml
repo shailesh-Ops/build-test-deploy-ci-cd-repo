@@ -1,0 +1,25 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: mysql-db-vpa
+  namespace: mysql-ns
+
+spec:
+  targetRef:
+    name: mysql-statefulset
+    kind: StatefulSet
+    apiVersion: apps/v1
+
+  updatePolicy:
+    updateModes: "Auto"
+  resourcesPolicy:
+    containerpolicies:
+      - containerName: mysql-db
+        minAllowed:
+          cpu: 500m
+          memory: 600Mi
+        maxAllowed:
+          cpu: "1"
+          memory: "2Gi"
+        controlledResources: ["cpu","memory"]
+
