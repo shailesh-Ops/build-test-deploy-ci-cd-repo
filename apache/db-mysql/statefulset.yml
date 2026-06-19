@@ -30,8 +30,18 @@ spec:
                 memory: 400Mi
 
             envFrom:
-              - secretRef:
-                  name: mysql-secret
+              - name: MYSQL_ROOT_PASSWORD
+                valueFrom:
+                  secretRef:
+                    name: mysql-secret
+                    key: MYSQL_ROOT_PASSWORD 
+
+            envFrom:
+              - name: MYSQL_DB
+                valueFrom:
+                  configMapKeyRef:
+                    name: mysql-configmap
+                    key: MYSQL_DATABASE 
 
             volumeMounts:
               - name: mysql-storage-path
