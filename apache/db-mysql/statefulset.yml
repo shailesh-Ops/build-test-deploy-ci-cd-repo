@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StateFulSet
+kind: StatefulSet
 metadata:
   name: mysql-statfulset
   namespace: mysql-ns
