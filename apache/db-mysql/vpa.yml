@@ -11,15 +11,15 @@ spec:
     apiVersion: apps/v1
 
   updatePolicy:
-    updateModes: "Auto"
-  resourcesPolicy:
-    containerpolicies:
-      - containerName: mysql-db
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: "mysql-db"
         minAllowed:
-          cpu: 500m
-          memory: 600Mi
+          cpu: "100m"
+          memory: "128Mi"
         maxAllowed:
-          cpu: "1"
+          cpu: "2"
           memory: "2Gi"
-        controlledResources: ["cpu","memory"]
+        controlledResources: ["cpu", "memory"]
 
