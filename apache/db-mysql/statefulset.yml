@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StateFulSate
+kind: StateFulSet
 metadata:
   name: mysql-statfulset
   namespace: mysql-ns
@@ -43,9 +43,9 @@ spec:
                     key: MYSQL_DATABASE
 
 
-          volumeMounts:
-            - name: mysql-storage-path
-              mountPath: /var/lib/mysql
+            volumeMounts:
+              - name: mysql-storage-path
+                mountPath: /var/lib/mysql
 
   volumeClaimTemplates:
   - metadata:
