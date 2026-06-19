@@ -12,41 +12,41 @@ spec:
       app: mysql
 
   template:
-      metadata:
-        labels:
-          app: mysql
+    metadata:
+      labels:
+        app: mysql
 
-      spec:
-        containers:
-          - name: mysql-statefulset-pod
-            image: mysql:8.0
-            ports:
-              - containerPort: 3306
-            resources:
-              requests:
-                cpu: 300m
-                memory: 300Mi
-              limits:
-                cpu: 400m
-                memory: 400Mi
+    spec:
+      containers:
+        - name: mysql-statefulset-pod
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              cpu: 300m
+              memory: 300Mi
+            limits:
+              cpu: 400m
+              memory: 400Mi
 
-            env:
-              - name: MYSQL_ROOT_PASSWORD
-                valueFrom:
-                  secretRef:
-                    name: mysql-secret-db
-                    key: MYSQL_ROOT_PASSWORD  
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretRef:
+                  name: mysql-secret-db
+                  key: MYSQL_ROOT_PASSWORD  
 
-              - name: MYSQL_DATABASE
-                valueFrom:
-                  configMapKeyRef:
-                    name: mysql-configmap-db
-                    key: MYSQL_DATABASE
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap-db
+                  key: MYSQL_DATABASE
 
 
-            volumeMounts:
-              - name: mysql-data-claim-pvc
-                mountPath: /var/lib/mysql
+          volumeMounts:
+            - name: mysql-data-claim-pvc
+              mountPath: /var/lib/mysql
 
   volumeClaimTemplates:
   - metadata:
