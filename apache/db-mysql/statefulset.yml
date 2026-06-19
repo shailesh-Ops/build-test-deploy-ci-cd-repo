@@ -33,19 +33,28 @@ spec:
               - name: MYSQL_ROOT_PASSWORD
                 valueFrom:
                   secretRef:
-                    name: mysql-secret
-                    key: MYSQL_ROOT_PASSWORD 
+                    name: mysql-secret-db
+                    key: MYSQL_ROOT_PASSWORD  
 
-            envFrom:
-              - name: MYSQL_DB
+              - name: MYSQL_DATABASE
                 valueFrom:
                   configMapKeyRef:
-                    name: mysql-configmap
-                    key: MYSQL_DATABASE 
+                    name: mysql-configmap-db
+                    key: MYSQL_DATABASE
 
-            volumeMounts:
-              - name: mysql-storage-path
-                mountPath: /var/lib/mysql
+
+          volumeMounts:
+            - name: mysql-storage-path
+              mountPath: /var/lib/mysql
+
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data-claim-pvc
+    spec:
+      accessMode: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 2Gi
 
 
 
