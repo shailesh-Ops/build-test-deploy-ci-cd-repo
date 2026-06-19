@@ -46,11 +46,11 @@ spec:
                   name: mysql-secret-db
                   key: MYSQL_ROOT_PASSWORD
 
-            - name: MYSQL_DATABASE
+            - name: MYSQL_DATABASE_PASS
               valueFrom:
                 configMapKeyRef:
                   name: mysql-configmap-db
-                  key: MYSQL_DATABASE
+                  key: MYSQL_DATABASE_PASS
 
           volumeMounts:
             - name: mysql-data-claim-pvc
