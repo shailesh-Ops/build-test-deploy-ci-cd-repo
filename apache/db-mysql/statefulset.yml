@@ -7,6 +7,7 @@ metadata:
 spec:
   serviceName: mysql-svc
   replicas: 1
+
   selector:
     matchLabels:
       app: mysql
@@ -17,11 +18,19 @@ spec:
         app: mysql
 
     spec:
+      tolerations:
+        - key: "prod"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+
       containers:
         - name: mysql-statefulset-pod
           image: mysql:8.0
+
           ports:
             - containerPort: 3306
+
           resources:
             requests:
               cpu: 300m
@@ -29,12 +38,13 @@ spec:
             limits:
               cpu: 400m
               memory: 400Mi
+
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret-db
-                  key: MYSQL_ROOT_PASSWORD  
+                  key: MYSQL_ROOT_PASSWORD
 
             - name: MYSQL_DATABASE
               valueFrom:
@@ -42,20 +52,20 @@ spec:
                   name: mysql-configmap-db
                   key: MYSQL_DATABASE
 
-
           volumeMounts:
             - name: mysql-data-claim-pvc
               mountPath: /var/lib/mysql
 
   volumeClaimTemplates:
-  - metadata:
-      name: mysql-data-claim-pvc     # storageclass use by default class 
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 2Gi
+    - metadata:
+        name: mysql-data-claim-pvc
 
+      spec:
+        accessModes:
+          - ReadWriteOnce
 
+        storageClassName: standard
 
-
+        resources:
+          requests:
+            storage: 2Gi
