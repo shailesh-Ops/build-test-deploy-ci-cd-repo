@@ -44,14 +44,15 @@ spec:
 
 
             volumeMounts:
-              - name: mysql-storage-path
+              - name: mysql-data-claim-pvc
                 mountPath: /var/lib/mysql
 
   volumeClaimTemplates:
   - metadata:
       name: mysql-data-claim-pvc
     spec:
-      accessMode: ["ReadWriteOnce"]
+      storageClassName: local-storage
+      accessModes: ["ReadWriteOnce"]
       resources:
         requests:
           storage: 2Gi
