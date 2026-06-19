@@ -8,8 +8,9 @@ spec:
   serviceName: mysql-svc
   replicas: 1
   selector:
-    matchLabls:
+    matchLabels:
       app: mysql
+
   template:
       metadata:
         labels:
