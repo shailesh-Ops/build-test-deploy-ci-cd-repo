@@ -29,7 +29,6 @@ spec:
             limits:
               cpu: 400m
               memory: 400Mi
-
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
