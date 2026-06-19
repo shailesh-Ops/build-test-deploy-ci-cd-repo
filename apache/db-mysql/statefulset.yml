@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql-statfulset
+  name: mysql-statefulset
   namespace: mysql-ns
 
 spec:
@@ -49,9 +49,8 @@ spec:
 
   volumeClaimTemplates:
   - metadata:
-      name: mysql-data-claim-pvc
+      name: mysql-data-claim-pvc     # storageclass use by default class 
     spec:
-      storageClassName: local-storage
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
