@@ -12,7 +12,7 @@ spec:
     app: mysql
   ports:
     - name: mysql-db-port
-      protocol: UDP/TCP
+      protocol: TCP
       port: 3306
       targetPort: 3306
 
