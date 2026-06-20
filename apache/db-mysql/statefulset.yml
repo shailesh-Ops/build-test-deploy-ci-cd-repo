@@ -46,11 +46,11 @@ spec:
                   name: mysql-secret-db
                   key: MYSQL_ROOT_PASSWORD
 
-            - name: MYSQL_DATABASE_PASS
+            - name: MYSQL_DATABASE
               valueFrom:
                 configMapKeyRef:
                   name: mysql-configmap-db
-                  key: MYSQL_DATABASE_PASS
+                  key: MYSQL_DATABASE
 
           readinessProbe:
             tcpSocket:
