@@ -39,7 +39,13 @@ spec:
             periodSeconds: 10           # check every time whithin 10s 
             failureThreshold:  2  # if two time's got fail so restart container 
 
-        
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: 3306
+            initailDelaySeconds: 15
+            periodSeconds: 5 
+            faliureThreshold: 3 
 
 
           env:
