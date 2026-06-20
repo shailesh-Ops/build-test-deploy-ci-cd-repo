@@ -29,23 +29,23 @@ spec:
           image: mysql:8.0
 
           ports:
-            - containerPort: 3306
+          - containerPort: 3306
 
-            livenessProbe:
-              httpGet:
-                path: /health
-                port: 3306
-              initailDelaySeconds: 30       # wait for first one are done after run
-              periodSeconds: 10           # check every time whithin 10s 
-              failureThreshold:  2  # if two time's got fail so restart container 
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3306
+            initailDelaySeconds: 30       # wait for first one are done after run
+            periodSeconds: 10           # check every time whithin 10s 
+            failureThreshold:  2  # if two time's got fail so restart container 
 
-            readinessProbe:
-              httpGet:
-                path: /ready
-                port: 3306
-              initailDelaySeconds: 15
-              periodSeconds: 5 
-              faliureThreshold: 3 
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3306
+            initailDelaySeconds: 15
+            periodSeconds: 5 
+            faliureThreshold: 3 
 
 
           env:
