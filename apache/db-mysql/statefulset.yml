@@ -23,6 +23,8 @@ spec:
         pod-level-annotation: "true"
 
     spec:
+      nodeSelector:
+        deskType: "ssd"
       
       tolerations:
         - key: "prod"
