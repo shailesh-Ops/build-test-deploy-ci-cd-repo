@@ -1,5 +1,5 @@
 apiVersion: Policy/v1
-kind: PodDistruptionBudget
+kind: PodDisruptionBudget
 metadata:
   name: mysql-pdb
   namespace: mysql-ns
