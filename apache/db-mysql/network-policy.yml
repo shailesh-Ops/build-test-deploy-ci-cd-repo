@@ -1,0 +1,5 @@
+apiVersion: Networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mysql-network-policy
+  namespace: mysql-ns
