@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-app-deployment
+  labels:
+    app: server-app  
+  namespace: nginx  
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: server-app
+  template:
+    metadata:
+      labels:
+        app: server-app
+    spec:
+      containers:
+      - name: server-app-pod
+        image: dockerguy369/server-app:latest
+        ports:
+        - containerPort: 9000

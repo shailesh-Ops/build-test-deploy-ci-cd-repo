@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-configmap-db
+  namespace: mysql-ns
+
+data:
+  MYSQL_DATABASE: "ZGV2b3BzLW15c3FsLWJkCg=="
+
+
+

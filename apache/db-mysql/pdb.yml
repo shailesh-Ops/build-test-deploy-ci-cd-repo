@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mysql-pdb
+  namespace: mysql-ns
+
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: mysql
+

@@ -1,10 +1,10 @@
-apiVersion: apps/v1
+apiVersion: apps/v1                
 kind: Deployment
 metadata:
   name: nginx-deployment
+  namespace: nginx 
   labels:
     app: nginx
-  namespace: nginx 
 
 spec:
   replicas: 3
@@ -14,12 +14,35 @@ spec:
 
   template:
     metadata:
+      name: nginx-deployment-pods
       labels:
         app: nginx
         
     spec:
-      containers:
-      - name: nginx
-        image: nginx:latest
-        ports:
-        - containerPort: 80
+      containers:                               # container creation using container and insaide create number of an pods 
+      - name: nginx-container 
+        image: nginx:latest                     # image which is provide from dockerhub.io and base image for pods
+        ports: 
+        - containerPort: 80                     # expose port for communicate with out saide service's with together use 
+        resources:                              # add request  for specifie and fix and minimum cpu and memory use 
+          requests:                                 
+            cpu: 100m
+            memory: 165Mi
+          limits:                                   # set an number of limits for pods resource's
+            cpu: 200m
+            memory: 265Mi
+        livenessProbe:         # see the pods(containers) livenessprobes means live state 
+          httpGet:                # it's use for pods liveness to ensure it have three type's probe i'm use livenessprobe for saw pods status 
+            path: /                           
+            port: 9000
+      
+
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html          
+          name: volume-pvc
+
+      volumes:        
+        - name: volume-pvc
+          persistentVolumeClaim: 
+            claimName: local-pvc
+
