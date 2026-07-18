@@ -8,6 +8,9 @@ spec:
   names:
     plural: devopsengineers
     singular: devopsengineer
+    shortNames:
+      - devops
+      - dls
     kind: DevOpsEngineer
   versions:
   - name: v1
@@ -26,8 +29,11 @@ spec:
                 type: string
               duration:
                 type: string
+                description: this DevOps roll it's always remote aviliable 
               platform:
                 type: string
+                discription: this roll are platform related absolutly aviliable 
               mode:
                 type: string
+                discription: DevOps Egineering is satrting to learn DevSecOps. MLOps. ALOPs
 
