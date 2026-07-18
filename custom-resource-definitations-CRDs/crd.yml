@@ -32,8 +32,8 @@ spec:
                 description: this DevOps roll it's always remote aviliable 
               platform:
                 type: string
-                discription: this roll are platform related absolutly aviliable 
+                description: this roll are platform related absolutly aviliable 
               mode:
                 type: string
-                discription: DevOps Egineering is satrting to learn DevSecOps. MLOps. ALOPs
+                description: DevOps Egineering is satrting to learn DevSecOps. MLOps. ALOPs
 
