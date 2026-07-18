@@ -1,0 +1,10 @@
+The CustomResourceDefinition devopsengineer.devopslocal.to.server.com is invalid: spec.names.plural: Invalid value: devopsengineers: field is immutable 
+
+/ this from 
+
+metadata: 
+   name: 
+
+and from
+
+plural: name miss match 
