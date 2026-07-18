@@ -2,6 +2,7 @@ apiVersion: devopslocal.to.server.com/v1
 kind: DevOpsEngineer
 metadata:
   name: test-crd-context
+
 spec:
   name: this is semple of crds
   duration: 3 month 24th january 2026
