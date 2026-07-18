@@ -27,12 +27,18 @@ spec:
                 type: string
               size:
                 type: string
+              name: 
+                type: string
+                description: this role is test purpose by  DevOps Engineer 
+
               duration:
                 type: string
                 description: this DevOps roll it's always remote aviliable 
+
               platform:
                 type: string
                 description: this roll are platform related absolutly aviliable 
+
               mode:
                 type: string
                 description: DevOps Egineering is satrting to learn DevSecOps. MLOps. ALOPs
