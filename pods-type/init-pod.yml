@@ -6,7 +6,7 @@ metadata:
 
 spec:
 
-  initCantainers: 
+  initContainers: 
   - name: initail-container
     image: busybox:latest
     command: ["sh", "-c", "echo 'this container is initail-container..'; slepp 5s;"]
