@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-container-test
+
+spec:
+  volumes:
+  - name: sheard-path-logs
+    emptyDir: {}
+
+  containers:
+  - name: main-container
+    image: busybox:latest
+    command: ["sh", "-c", " while true; do  echo 'main container up' >> /var/logs/app.logs ; sleep 5; done" ]
+    volumeMounts:
+    - name: sheard-path-logs
+      mountPath: /var/logs/
+
+  - name: sidecar-container
+    image: busybox:latest
+    command: ["sh", "-c", "tail -f /var/logs/app.logs"]
+
+    volumeMounts:
+    - name: sheard-path-logs
+      mountPath: /var/logs/
