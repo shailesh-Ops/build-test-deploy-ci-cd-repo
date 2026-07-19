@@ -1,13 +1,16 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: devopsengineer.devopslocal.to.server.com
+  name: devopsengineers.devopslocal.to.server.com
 spec:
   group: devopslocal.to.server.com
   scope: Namespaced
   names:
-    plural: devopsengineer
-    singular: devopsengineers
+    plural: devopsengineers
+    singular: devopsengineer
+    shortNames:
+      - devops
+      - dls
     kind: DevOpsEngineer
   versions:
   - name: v1
@@ -24,3 +27,19 @@ spec:
                 type: string
               size:
                 type: string
+              name: 
+                type: string
+                description: this role is test purpose by  DevOps Engineer 
+
+              duration:
+                type: string
+                description: this DevOps roll it's always remote aviliable 
+
+              platform:
+                type: string
+                description: this roll are platform related absolutly aviliable 
+
+              mode:
+                type: string
+                description: DevOps Egineering is satrting to learn DevSecOps. MLOps. ALOPs
+
