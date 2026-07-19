@@ -9,7 +9,7 @@ spec:
   initContainers: 
   - name: initail-container
     image: busybox:latest
-    command: ["sh", "-c", "echo 'this container is initail-container..'; slepp 10;", " echo 'all done .....' "]
+    command: ["sh", "-c", "echo 'this container is initail-container..' ;", "sleep 10; ", " echo 'all done .....' "]
 
   containers:
   - name: main-container
